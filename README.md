@@ -5,8 +5,17 @@ The Digital Lending Book API is an application designed to provide seamless acce
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint      | Deskripsi                               |
-|--------|---------------|-----------------------------------------|
+| Method     | Endpoint       | Deskripsi                                                                   |
+| ---------- | -------------- | --------------------------------------------------------------------------- |
+| **POST**   | `/auth/signin` | Login user dengan email & password. Return JWT token.                       |
+| **POST**   | `/auth/signup` | Registrasi user baru. Return token jika berhasil.                           |
+| **GET**    | `/books`       | Ambil daftar buku dengan pagination (`page`, `limit`).                      |
+| **POST**   | `/books`       | Tambah buku baru (admin only, butuh bearer token).                          |
+| **PUT**    | `/books/{id}`  | Update detail buku (admin only).                                            |
+| **DELETE** | `/books/{id}`  | Hapus buku (admin only).                                                    |
+| **POST**   | `/borrow`      | Pinjam buku berdasarkan `book_id`. Return record id, borrow_date, due_date. |
+| **POST**   | `/return`      | Kembalikan buku berdasarkan `record_id`. Return record id, return_date.     |
+
 
 ---
 

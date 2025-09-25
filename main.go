@@ -2,12 +2,17 @@ package main
 
 import (
 	"digitalbooklending/apps/middlewares/security"
+	"digitalbooklending/apps/repositories/mysql"
 	routerRest "digitalbooklending/apps/router/rest"
+	"digitalbooklending/apps/service/auth"
 	errorhandler "digitalbooklending/helpers/error_handler"
 
+	"github.com/go-playground/validator/v10"
+	"github.com/vizucode/gokit/adapter/dbc"
 	"github.com/vizucode/gokit/config"
 	"github.com/vizucode/gokit/factory/server"
 	"github.com/vizucode/gokit/factory/server/rest"
+	"github.com/vizucode/gokit/utils/constant"
 	"github.com/vizucode/gokit/utils/env"
 )
 
@@ -18,17 +23,17 @@ func main() {
 	*/
 	serviceName := env.GetString("SERVICE_NAME")
 	config.Load(serviceName, ".")
-	// validator10 := validator.New()
+	validator10 := validator.New()
 
-	// dbConnection := dbc.NewGormConnection(
-	// 	dbc.SetGormURIConnection(env.GetString("DB_CONNECTION")),
-	// 	dbc.SetGormDriver(constant.Postgres),
-	// 	dbc.SetGormMaxIdleConnection(2),
-	// 	dbc.SetGormMaxPoolConnection(50),
-	// 	dbc.SetGormMinPoolConnection(10),
-	// 	dbc.SetGormSkipTransaction(true),
-	// 	dbc.SetGormServiceName(serviceName),
-	// )
+	dbConnection := dbc.NewGormConnection(
+		dbc.SetGormURIConnection(env.GetString("DB_CONNECTION")),
+		dbc.SetGormDriver(constant.MySQL),
+		dbc.SetGormMaxIdleConnection(2),
+		dbc.SetGormMaxPoolConnection(50),
+		dbc.SetGormMinPoolConnection(10),
+		dbc.SetGormSkipTransaction(true),
+		dbc.SetGormServiceName(serviceName),
+	)
 
 	/*
 		Repositories
@@ -38,12 +43,14 @@ func main() {
 	// 	Timeout: 5 * time.Second,
 	// })
 
+	mysqlConn := mysql.NewMysql(dbConnection.DB)
+
 	/*
 		Service Mapping
 	*/
-
 	restRouter := routerRest.NewRest(
 		security.NewSecurity(),
+		auth.NewAuthService(mysqlConn, validator10),
 	)
 
 	app := server.NewService(
