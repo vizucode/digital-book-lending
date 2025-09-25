@@ -67,10 +67,11 @@ func (s *authService) generateAccessToken(ctx context.Context, user models.Users
 
 	// Create JWT claims
 	claims := jwt.MapClaims{
-		"id":    user.Id,
-		"email": user.Email,
-		"exp":   expirationTime.Unix(),
-		"iat":   time.Now().Unix(),
+		"id":        user.Id,
+		"email":     user.Email,
+		"full_name": user.Name,
+		"exp":       expirationTime.Unix(),
+		"iat":       time.Now().Unix(),
 	}
 
 	// Create token with claims

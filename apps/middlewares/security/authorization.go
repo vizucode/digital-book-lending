@@ -11,7 +11,6 @@ import (
 	"digitalbooklending/apps/domain"
 	contextkeys "digitalbooklending/helpers/constants/context_keys"
 	"digitalbooklending/helpers/constants/httpstd"
-	"digitalbooklending/helpers/constants/rpcstd"
 
 	"github.com/vizucode/gokit/logger"
 	"github.com/vizucode/gokit/utils/errorkit"
@@ -30,17 +29,17 @@ func (mw *security) AuthMiddleware(c *fiber.Ctx) error {
 	authHeader := c.Get("Authorization")
 
 	if strings.EqualFold(authHeader, "") {
-		return c.Next()
+		return errorkit.NewErrorStd(http.StatusUnauthorized, "", "Invalid token format")
 	}
 
 	if !strings.HasPrefix(authHeader, "Bearer ") {
-		return errorkit.NewErrorStd(http.StatusUnauthorized, rpcstd.INVALID_ARGUMENT, "Invalid token format")
+		return errorkit.NewErrorStd(http.StatusUnauthorized, "", "Invalid token format")
 	}
 
 	token := strings.TrimPrefix(authHeader, "Bearer ")
 
 	if strings.EqualFold(token, "") {
-		return c.Next()
+		return errorkit.NewErrorStd(http.StatusUnauthorized, "", "Invalid token format")
 	}
 
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
@@ -50,38 +49,44 @@ func (mw *security) AuthMiddleware(c *fiber.Ctx) error {
 		return []byte(os.Getenv("ACCESS_SECRET_KEY")), nil
 	})
 
+	if parsedToken == nil {
+		logger.Log.Error(ctx, err)
+		return errorkit.NewErrorStd(http.StatusUnauthorized, "", "invalid token")
+	}
+
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 	if !ok || !parsedToken.Valid {
 		logger.Log.Error(ctx, err)
-		return errorkit.NewErrorStd(http.StatusUnauthorized, rpcstd.INVALID_ARGUMENT, "token is expired")
+		return errorkit.NewErrorStd(http.StatusUnauthorized, "", "token is expired")
 	}
 
 	exp, ok := claims["exp"].(float64)
 	if !ok {
 		logger.Log.Error(ctx, err)
-		return errorkit.NewErrorStd(http.StatusUnauthorized, rpcstd.INVALID_ARGUMENT, "Invalid token claims")
+		return errorkit.NewErrorStd(http.StatusUnauthorized, "", "Invalid token claims")
 	}
 
 	expirationTime := time.Unix(int64(exp), 0)
 	durationUntilExpiration := time.Until(expirationTime)
 
 	if durationUntilExpiration <= 0 {
-		err := errorkit.NewErrorStd(http.StatusUnauthorized, rpcstd.INVALID_ARGUMENT, "Token has already expired")
+		err := errorkit.NewErrorStd(http.StatusUnauthorized, "", "Token has already expired")
 		logger.Log.Error(ctx, err)
-		return errorkit.NewErrorStd(http.StatusUnauthorized, rpcstd.INVALID_ARGUMENT, "Token has already expired")
+		return errorkit.NewErrorStd(http.StatusUnauthorized, "", "Token has already expired")
 	}
 
 	// Parsing user context from token
 	resultClaims, err := json.Marshal(&claims)
 	if err != nil {
 		logger.Log.Error(ctx, err)
-		return errorkit.NewErrorStd(http.StatusInternalServerError, rpcstd.INTERNAL, httpstd.InternalServerError)
+		return errorkit.NewErrorStd(http.StatusInternalServerError, "", httpstd.InternalServerError)
 	}
 
 	err = json.Unmarshal(resultClaims, &UserContext)
 	if err != nil {
-		fmt.Println(err)
-		return errorkit.NewErrorStd(http.StatusInternalServerError, rpcstd.INTERNAL, httpstd.InternalServerError)
+		fmt.Println("error unmarshal token claims: ", err)
+		logger.Log.Error(ctx, err)
+		return errorkit.NewErrorStd(http.StatusInternalServerError, "", httpstd.InternalServerError)
 	}
 
 	c.Locals(contextkeys.UserContext, UserContext)
