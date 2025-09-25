@@ -53,11 +53,17 @@ Buat file `.env` di root project. Berikut contoh template:
     ACCESS_SECRET_KEY=my-secret-key
     APP_PORT=8080
     APP_HOST=localhost
+    DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-verysecret}
+    DB_DATABASE=${DB_DATABASE:-db_book_lending}
+    DB_USERNAME=${DB_USERNAME:-root}
 
 - **`DATABASE_URL`** → URL koneksi ke database PostgreSQL.  
 - **`ACCESS_SECRET_KEY`** → Secret key untuk JWT authentication.  
 - **`APP_PORT`** → digunakan untuk PORT
 - **`APP_PORT`** → digunakan untuk menentukan HOST
+- **`DB_ROOT_PASSWORD`** → Root password for MySQL database
+- **`DB_DATABASE`** → Database name for the application
+- **`DB_USERNAME`** → Username for database connection
 
 ---
 
@@ -67,11 +73,11 @@ Gunakan **golang-migrate** untuk mengatur migrasi database.
 
 ### Menjalankan migration (up)
 
-    migrate -path apps/migrations -database "$DATABASE_URL" up
+    migrate -path apps/migrations -database "mysql://user:password@tcp(host:port)/dbname?query" up
 
 ### Rollback migration (down)
 
-    migrate -path apps/migrations -database "$DATABASE_URL" down
+    migrate -path apps/migrations -database "mysql://user:password@tcp(host:port)/dbname?query" down
 
 ### Membuat migration baru
 

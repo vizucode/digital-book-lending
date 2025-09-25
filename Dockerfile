@@ -35,6 +35,6 @@ COPY --from=builder /app/digital-book-lending /digital-book-lending
 # EXPOSE 8080 # Ganti dengan port yang digunakan aplikasi Anda
 
 # Tentukan perintah untuk menjalankan aplikasi
-ENTRYPOINT ["/backend-boilerplate"]
+ENTRYPOINT ["/digital-book-lending"]
 # Atau jika Anda menggunakan alpine:
 # CMD ["/backend-boilerplate"]
