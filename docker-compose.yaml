@@ -11,9 +11,3 @@ services:
       - APP_PORT=${APP_PORT-8080}
       - DB_CONNECTION=${DB_CONNECTION}
       - SERVICE_NAME=${SERVICE_NAME}
-    # networks:
-    #   - mynetwork
-
-# networks:
-#   mynetwork:
-#     external: true

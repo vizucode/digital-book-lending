@@ -3,9 +3,10 @@ package security
 import (
 	"context"
 
+	"digitalbooklending/apps/domain"
+	contextkeys "digitalbooklending/helpers/constants/context_keys"
+
 	"github.com/gofiber/fiber/v2"
-	"github.com/origamilabsid/backend-boilerplate/apps/domain"
-	contextkeys "github.com/origamilabsid/backend-boilerplate/helpers/constants/context_keys"
 )
 
 func ExtractUserContextFiber(c *fiber.Ctx) (responseCtx context.Context, resp domain.UserContext, ok bool) {

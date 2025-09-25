@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/origamilabsid/backend-boilerplate/apps/domain"
-	contextkeys "github.com/origamilabsid/backend-boilerplate/helpers/constants/context_keys"
-	"github.com/origamilabsid/backend-boilerplate/helpers/constants/httpstd"
-	"github.com/origamilabsid/backend-boilerplate/helpers/constants/rpcstd"
+	"digitalbooklending/apps/domain"
+	contextkeys "digitalbooklending/helpers/constants/context_keys"
+	"digitalbooklending/helpers/constants/httpstd"
+	"digitalbooklending/helpers/constants/rpcstd"
 
 	"github.com/vizucode/gokit/logger"
 	"github.com/vizucode/gokit/utils/errorkit"

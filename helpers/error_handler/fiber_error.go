@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/origamilabsid/backend-boilerplate/helpers/constants/rpcstd"
-	"github.com/origamilabsid/backend-boilerplate/helpers/translator"
+	"digitalbooklending/helpers/constants/rpcstd"
+	"digitalbooklending/helpers/translator"
 
 	"github.com/vizucode/gokit/utils/errorkit"
 

@@ -1,13 +1,10 @@
-module github.com/origamilabsid/backend-boilerplate
+module digitalbooklending
 
 go 1.23.0
 
 require (
-	github.com/aws/aws-sdk-go v1.55.5
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/golang-jwt/jwt/v4 v4.5.0
-	github.com/novalagung/gubrak/v2 v2.0.1
-	github.com/redis/go-redis/v9 v9.6.1
 	github.com/vizucode/gokit v1.1.11
 	google.golang.org/grpc v1.66.1
 	google.golang.org/protobuf v1.34.2
@@ -27,7 +24,6 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hellofresh/health-go/v4 v4.7.0 // indirect
-	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -37,6 +33,7 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
+	github.com/redis/go-redis/v9 v9.6.1 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
