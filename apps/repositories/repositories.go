@@ -20,4 +20,6 @@ type IDatabase interface {
 	FirstLendingRecordByUserId(ctx context.Context, userId uint) (lendingRecord models.LendingRecord, err error)
 	CountUserLendingRecords(ctx context.Context, userId uint) (count int64, err error)
 	UpdateLendingRecord(ctx context.Context, lendingRecord models.LendingRecord) (err error)
+
+	CheckLimitBorrow(ctx context.Context, userId uint) (err error)
 }

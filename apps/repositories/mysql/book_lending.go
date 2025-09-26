@@ -153,3 +153,40 @@ func (r *mysql) UpdateLendingRecord(ctx context.Context, lendingRecord models.Le
 		return nil // commit
 	})
 }
+
+func (r *mysql) CheckLimitBorrow(ctx context.Context, userId uint) (err error) {
+	var resp int64
+
+	sevenDaysAgo := time.Now().AddDate(0, 0, -7)
+
+	result := r.db.WithContext(ctx).
+		Model(&models.LendingRecord{}).
+		Where("user_id = ?", userId).
+		Where("borrow_date >= ?", sevenDaysAgo).
+		Where("return_date IS NULL").
+		Count(&resp)
+	if result.Error != nil {
+		logger.Log.Error(ctx, result.Error)
+		return errorkit.NewErrorStd(http.StatusInternalServerError, "", httpstd.InternalServerError)
+	}
+
+	const MAX_LIMIT = 5
+	if resp >= MAX_LIMIT {
+		var earliest time.Time
+		err := r.db.WithContext(ctx).
+			Model(&models.LendingRecord{}).
+			Select("MIN(borrow_date)").
+			Where("user_id = ?", userId).
+			Where("borrow_date >= ?", sevenDaysAgo).
+			Where("return_date IS NULL").
+			Scan(&earliest).Error
+		if err != nil {
+			logger.Log.Error(ctx, err)
+			return err
+		}
+		msg := fmt.Sprintf("borrow limit reached, earliest borrow date: %s", earliest.Add(7*24*time.Hour).Format("2006-01-02 15:04:05"))
+		return errorkit.NewErrorStd(http.StatusBadRequest, "", msg)
+	}
+
+	return nil
+}

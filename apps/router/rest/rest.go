@@ -41,7 +41,7 @@ func (r *rest) Router(app fiber.Router) {
 	app.Delete("/books/:id", r.mw.AuthMiddleware, r.deleteBook)
 	app.Put("/books/:id", r.mw.AuthMiddleware, r.updateBook)
 
-	app.Post("/borrow", r.mw.AuthMiddleware, r.borrowBook)
+	app.Post("/borrow", r.mw.AuthMiddleware, r.mw.CheckLendingRateLimit, r.borrowBook)
 	app.Post("/return", r.mw.AuthMiddleware, r.returnBooks)
 }
 

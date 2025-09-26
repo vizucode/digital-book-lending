@@ -51,7 +51,7 @@ func main() {
 		Service Mapping
 	*/
 	restRouter := routerRest.NewRest(
-		security.NewSecurity(),
+		security.NewSecurity(mysqlConn),
 		auth.NewAuthService(mysqlConn, validator10),
 		book.NewBook(validator10, mysqlConn),
 		booklending.NewBookLendingService(mysqlConn, validator10),
