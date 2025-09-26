@@ -6,6 +6,7 @@ import (
 	routerRest "digitalbooklending/apps/router/rest"
 	"digitalbooklending/apps/service/auth"
 	"digitalbooklending/apps/service/book"
+	booklending "digitalbooklending/apps/service/book_lending"
 	errorhandler "digitalbooklending/helpers/error_handler"
 
 	"github.com/go-playground/validator/v10"
@@ -53,6 +54,7 @@ func main() {
 		security.NewSecurity(),
 		auth.NewAuthService(mysqlConn, validator10),
 		book.NewBook(validator10, mysqlConn),
+		booklending.NewBookLendingService(mysqlConn, validator10),
 	)
 
 	app := server.NewService(

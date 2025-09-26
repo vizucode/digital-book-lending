@@ -17,3 +17,8 @@ type IBook interface {
 	UpdateBook(ctx context.Context, id uint, req domain.RequestBook) (resp domain.Book, err error)
 	DeleteBook(ctx context.Context, id uint) (err error)
 }
+
+type IBookLending interface {
+	BorrowBooks(ctx context.Context, req domain.RequestLending) (err error)
+	ReturnBooks(ctx context.Context, req domain.RequestReturnBook) (err error)
+}

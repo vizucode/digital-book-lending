@@ -11,20 +11,23 @@ import (
 )
 
 type rest struct {
-	mw          middlewares.IMiddleware
-	authService service.IAuth
-	bookService service.IBook
+	mw             middlewares.IMiddleware
+	authService    service.IAuth
+	bookService    service.IBook
+	lendingService service.IBookLending
 }
 
 func NewRest(
 	mw middlewares.IMiddleware,
 	authService service.IAuth,
 	bookService service.IBook,
+	lendingService service.IBookLending,
 ) *rest {
 	return &rest{
-		mw:          mw,
-		authService: authService,
-		bookService: bookService,
+		mw:             mw,
+		authService:    authService,
+		bookService:    bookService,
+		lendingService: lendingService,
 	}
 }
 
@@ -37,6 +40,9 @@ func (r *rest) Router(app fiber.Router) {
 	app.Get("/books/:id", r.mw.AuthMiddleware, r.firstBook)
 	app.Delete("/books/:id", r.mw.AuthMiddleware, r.deleteBook)
 	app.Put("/books/:id", r.mw.AuthMiddleware, r.updateBook)
+
+	app.Post("/borrow", r.mw.AuthMiddleware, r.borrowBook)
+	app.Post("/return", r.mw.AuthMiddleware, r.returnBooks)
 }
 
 func (rest *rest) ResponseJson(

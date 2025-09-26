@@ -137,3 +137,6 @@ Paket library yang ready-to-use tanpa perlu setting dll.
 - Pastikan `.env` sudah dikonfigurasi dengan benar.  
 - Jika menjalankan dengan Docker Compose, database akan otomatis berjalan dalam container `db`.  
 - Gunakan `migrate create` untuk menambah migrasi baru sesuai kebutuhan.
+
+## Techincal decission
+- Saya menggunakan row-level locking di database saat proses peminjaman buku untuk menjamin konsistensi data dan mencegah terjadinya race condition. Namun, saya tau ada trade-off berupa potensi bottleneck dan penurunan performa jika banyak transaksi paralel mengakses data buku yang sama. Selain itu, locking juga bisa meningkatkan risiko deadlock apabila transaksi tidak dikelola dengan baik, sehingga saya perlu memastikan transaksi tetap singkat dan hanya mengunci data yang benar-benar diperlukan. Meskipun ada sedikit overhead, saya memilih pendekatan ini karena memberikan jaminan integritas data yang lebih kuat dibandingkan hanya mengandalkan validasi di level aplikasi.

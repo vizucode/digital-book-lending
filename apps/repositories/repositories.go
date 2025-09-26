@@ -15,4 +15,9 @@ type IDatabase interface {
 	GetListBooks(ctx context.Context, filter models.Filter) (books []models.Book, err error)
 	DeleteBook(ctx context.Context, id uint) (err error)
 	UpdateBook(ctx context.Context, id uint, book models.Book) (err error)
+
+	CreateLendingRecord(ctx context.Context, lendingRecord models.LendingRecord) (err error)
+	FirstLendingRecordByUserId(ctx context.Context, userId uint) (lendingRecord models.LendingRecord, err error)
+	CountUserLendingRecords(ctx context.Context, userId uint) (count int64, err error)
+	UpdateLendingRecord(ctx context.Context, lendingRecord models.LendingRecord) (err error)
 }
