@@ -35,11 +35,12 @@ apps/
 │       ├── lending.go       # Route /borrow, /return
 │       └── rest.go          # Setup router utama
 │
-├── service/                 # Business logic (service layer)
-│   ├── auth/                # Service untuk autentikasi
-│   ├── book/                # Service untuk manajemen buku
-│   ├── book_lending/        # Service untuk peminjaman & pengembalian
-│   └── service.go           # Inisialisasi service global
+└── service/                 # Business logic (service layer)
+    ├── auth/                # Service untuk autentikasi
+    ├── book/                # Service untuk manajemen buku
+    ├── book_lending/        # Service untuk peminjaman & pengembalian
+    └── service.go           # Inisialisasi service global
+
 
 ## 🔗 API Endpoints
 
