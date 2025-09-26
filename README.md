@@ -4,7 +4,7 @@ The Digital Lending Book API is an application designed to provide seamless acce
 ---
 
 ## Structure Folder
-apps/
+```apps/
 ├── domain/                  # Berisi entity dan request/response DTO
 │   ├── auth.go              # DTO untuk login/register
 │   ├── book.go              # DTO untuk book (request/response)
@@ -40,8 +40,7 @@ apps/
     ├── book/                # Service untuk manajemen buku
     ├── book_lending/        # Service untuk peminjaman & pengembalian
     └── service.go           # Inisialisasi service global
-
-
+```
 ## 🔗 API Endpoints
 
 | Method     | Endpoint       | Deskripsi                                                                   |
