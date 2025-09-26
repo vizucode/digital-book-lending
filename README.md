@@ -3,6 +3,44 @@ The Digital Lending Book API is an application designed to provide seamless acce
 
 ---
 
+## Structure Folder
+apps/
+├── domain/                  # Berisi entity dan request/response DTO
+│   ├── auth.go              # DTO untuk login/register
+│   ├── book.go              # DTO untuk book (request/response)
+│   ├── lending.go           # DTO untuk peminjaman
+│   ├── response_std.go      # Standar response API
+│   └── user_context.go      # Context user (JWT claims, dsb)
+│
+├── middlewares/             # Middleware HTTP (auth, logging, dll.)
+│
+├── migrations/              # File migrasi database (schema)
+│
+├── models/                  # ORM models (GORM)
+│   ├── audit_log.go         # Tabel audit log
+│   ├── book.go              # Tabel buku
+│   ├── filter.go            # Filter/query param
+│   ├── lending_record.go    # Tabel peminjaman
+│   ├── user_borrow_limiter.go # Tabel limiter pinjaman (rate limit)
+│   └── user.go              # Tabel user
+│
+├── repositories/            # Akses database (repository pattern)
+│   └── mysql/               # Implementasi repository pakai MySQL + GORM
+│       └── repositories.go
+│
+├── router/                  # Routing layer (HTTP endpoint mapping)
+│   └── rest/                # REST API routes
+│       ├── auth.go          # Route /auth/*
+│       ├── book.go          # Route /books/*
+│       ├── lending.go       # Route /borrow, /return
+│       └── rest.go          # Setup router utama
+│
+├── service/                 # Business logic (service layer)
+│   ├── auth/                # Service untuk autentikasi
+│   ├── book/                # Service untuk manajemen buku
+│   ├── book_lending/        # Service untuk peminjaman & pengembalian
+│   └── service.go           # Inisialisasi service global
+
 ## 🔗 API Endpoints
 
 | Method     | Endpoint       | Deskripsi                                                                   |

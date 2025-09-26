@@ -23,3 +23,8 @@ services:
       - MYSQL_DATABASE=${DB_DATABASE:-db_book_lending}
       - MYSQL_USER=${DB_USERNAME:-user1}
       - MYSQL_PASSWORD=${DB_PASSWORD:-user1secret}
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
